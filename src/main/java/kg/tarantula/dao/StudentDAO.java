@@ -24,4 +24,9 @@ public class StudentDAO {
     public Student show(int id) {
         return studentList.stream().filter(student -> student.getId() == id).findAny().orElse(null);
     }
+
+    public void save(Student student) {
+        student.setId(++studentId);
+        studentList.add(student);
+    }
 }

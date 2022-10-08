@@ -1,12 +1,11 @@
 package kg.tarantula.controllers;
 
 import kg.tarantula.dao.StudentDAO;
+import kg.tarantula.models.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/student")
@@ -31,6 +30,18 @@ public class StudentController {
         model.addAttribute("student", studentDAO.show(id));
         return "student/show";
     }
+
+    @GetMapping("/new")
+    public String newStudent(@ModelAttribute("student") Student student) {
+        return "student/new";
+    }
+
+    @PostMapping()
+    public String createStudent(@ModelAttribute("student") Student student) {
+        studentDAO.save(student);
+        return "redirect:student";
+    }
+
 
 
 }
