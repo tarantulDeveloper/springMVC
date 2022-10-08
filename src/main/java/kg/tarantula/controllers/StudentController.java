@@ -1,10 +1,13 @@
 package kg.tarantula.controllers;
 
+
 import kg.tarantula.dao.StudentDAO;
 import kg.tarantula.models.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -37,7 +40,11 @@ public class StudentController {
     }
 
     @PostMapping()
-    public String createStudent(@ModelAttribute("student") Student student) {
+    public String createStudent(@ModelAttribute("student") @Validated Student student,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "student/new";
+        }
         studentDAO.save(student);
         return "redirect:student";
     }
@@ -49,7 +56,11 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public String updateStudent(@ModelAttribute("student") Student student, @PathVariable("id") int id) {
+    public String updateStudent(@ModelAttribute("student") @Validated Student student,
+                                BindingResult bindingResult, @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) {
+            return "student/edit";
+        }
         studentDAO.update(id, student);
         return "redirect:/student";
     }

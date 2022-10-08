@@ -5,8 +5,12 @@
     <title>Student</title>
 </head>
 <body>
+<p>Id:</p>
 <p th:text="${student.getId()}"></p>
-<p th:text="${student.getName()}"></p>
+<p th:text="${'Name: ' + student.getName()}"></p>
+<p th:text="${'Age: ' + student.getAge()}"></p>
+
+<p th:text="${'Email: ' + student.getEmail()}"></p>
 <a th:href="@{/student/{id}/edit(id=${student.getId()})}">Edit</a>
 
 <form th:method="DELETE" th:action="@{/student/{id}(id=${student.getId()})}">

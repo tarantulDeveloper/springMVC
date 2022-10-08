@@ -12,9 +12,9 @@ public class StudentDAO {
     private List<Student> studentList;
     {
         studentList = new ArrayList<>();
-        studentList.add(new Student(++studentId,"Abay"));
-        studentList.add(new Student(++studentId, "Nurtas"));
-        studentList.add(new Student(++studentId, "Nuskayim"));
+        studentList.add(new Student(++studentId,"Abay",1, "abay@mail.com"));
+        studentList.add(new Student(++studentId, "Nurtas",1,"nurtas@mail.com"));
+        studentList.add(new Student(++studentId, "Nuskayim",2,"nusk@mail.com"));
     }
 
     public List<Student> index() {
@@ -33,6 +33,8 @@ public class StudentDAO {
     public void update(int id, Student updatedStudent) {
         Student studentToBeUpdated = show(id);
         studentToBeUpdated.setName(updatedStudent.getName());
+        studentToBeUpdated.setAge(updatedStudent.getAge());
+        studentToBeUpdated.setEmail(updatedStudent.getEmail());
     }
 
     public void delete(int id) {
