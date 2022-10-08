@@ -29,4 +29,13 @@ public class StudentDAO {
         student.setId(++studentId);
         studentList.add(student);
     }
+
+    public void update(int id, Student updatedStudent) {
+        Student studentToBeUpdated = show(id);
+        studentToBeUpdated.setName(updatedStudent.getName());
+    }
+
+    public void delete(int id) {
+        studentList.removeIf(s -> s.getId() == id);
+    }
 }

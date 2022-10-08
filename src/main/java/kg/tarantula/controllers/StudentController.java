@@ -42,6 +42,24 @@ public class StudentController {
         return "redirect:student";
     }
 
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("student", studentDAO.show(id));
+        return "student/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String updateStudent(@ModelAttribute("student") Student student, @PathVariable("id") int id) {
+        studentDAO.update(id, student);
+        return "redirect:/student";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        studentDAO.delete(id);
+        return "redirect:/student";
+    }
+
 
 
 }
