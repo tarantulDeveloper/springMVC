@@ -1,21 +1,12 @@
 package kg.tarantula.models;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+
 
 public class Student {
     private int id;
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name length should be between 2 and 30")
     private String name;
-
-    @Min(value = 0, message = "Age should be greater than 0")
     private int age;
-    @NotEmpty(message = "Email should not be empty")
-    @Email(message = "Email should be valid!")
     private String email;
 
     public Student() {

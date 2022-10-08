@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @Controller
 @RequestMapping("/student")
 public class StudentController {
@@ -21,7 +23,7 @@ public class StudentController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model) throws SQLException {
         //get all students
         model.addAttribute("students", studentDAO.index());
         return "student/index";
@@ -40,11 +42,7 @@ public class StudentController {
     }
 
     @PostMapping()
-    public String createStudent(@ModelAttribute("student") @Validated Student student,
-                                BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "student/new";
-        }
+    public String createStudent(@ModelAttribute("student") Student student) throws SQLException {
         studentDAO.save(student);
         return "redirect:student";
     }
@@ -56,11 +54,7 @@ public class StudentController {
     }
 
     @PatchMapping("/{id}")
-    public String updateStudent(@ModelAttribute("student") @Validated Student student,
-                                BindingResult bindingResult, @PathVariable("id") int id) {
-        if (bindingResult.hasErrors()) {
-            return "student/edit";
-        }
+    public String updateStudent(@ModelAttribute("student") Student student, @PathVariable("id") int id) {
         studentDAO.update(id, student);
         return "redirect:/student";
     }
