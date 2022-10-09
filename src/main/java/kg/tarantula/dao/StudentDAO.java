@@ -36,7 +36,7 @@ public class StudentDAO {
         List<Student> students = new ArrayList<>();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM  student");
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             Student student = new Student();
             student.setId(resultSet.getInt("id"));
             student.setName(resultSet.getString("name"));
@@ -51,24 +51,66 @@ public class StudentDAO {
     }
 
     public Student show(int id) {
-        //return studentList.stream().filter(student -> student.getId() == id).findAny().orElse(null);
-        return null;
+        Student student = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM student WHERE id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            student = new Student();
+
+            student.setId(resultSet.getInt("id"));
+            student.setName(resultSet.getString("name"));
+            student.setAge(resultSet.getInt("age"));
+            student.setEmail(resultSet.getString("email"));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return student;
     }
 
     public void save(Student student) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate("insert into student values(" + 1 + ", '" + student.getName() + "', " +
-                "'" + student.getAge() + "', '" + student.getEmail() + "')");
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "INSERT INTO student values(1, ?, ?, ?)"
+        );
+        preparedStatement.setString(1, student.getName());
+        preparedStatement.setInt(2, student.getAge());
+        preparedStatement.setString(3, student.getEmail());
+
+        preparedStatement.executeUpdate();
     }
 
     public void update(int id, Student updatedStudent) {
-//        Student studentToBeUpdated = show(id);
-//        studentToBeUpdated.setName(updatedStudent.getName());
-//        studentToBeUpdated.setAge(updatedStudent.getAge());
-//        studentToBeUpdated.setEmail(updatedStudent.getEmail());
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE student SET name=?, age=?, email=? WHERE id=?"
+            );
+
+            preparedStatement.setString(1, updatedStudent.getName());
+            preparedStatement.setInt(2, updatedStudent.getAge());
+            preparedStatement.setString(3, updatedStudent.getEmail());
+            preparedStatement.setInt(4, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(int id) {
-        //studentList.removeIf(s -> s.getId() == id);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM student WHERE id=?"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
